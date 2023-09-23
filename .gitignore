@@ -1,0 +1,4 @@
+.idea
+cmd/server/tmp
+build/.env
+build/air/tmp
