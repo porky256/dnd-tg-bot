@@ -74,7 +74,7 @@ func (db *PGCharacterProvider) InsertCharactersAbilities(char *models.Character)
 func (db *PGCharacterProvider) InsertCharactersSkillInsights(char *models.Character) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), db.QueryTimeout)
 	defer cancel()
-	stmt := `INSERT INTO  skills_insights (character_owner, acrobatics, animalHandling, 
+	stmt := `INSERT INTO  skills_modificators (character_owner, acrobatics, animalHandling, 
                         arcana, athletics,deception,history,insight,intimidation,
 					    investigation,medicine,nature,perception,performance,persuasion,
                     	religion,sleight_of_hand,stealth,survival) 
@@ -83,24 +83,24 @@ func (db *PGCharacterProvider) InsertCharactersSkillInsights(char *models.Charac
 	var newID int
 	err := db.DB.QueryRowContext(ctx, stmt,
 		char.ID,
-		char.SkillInsights.Acrobatics,
-		char.SkillInsights.AnimalHandling,
-		char.SkillInsights.Arcana,
-		char.SkillInsights.Athletics,
-		char.SkillInsights.Deception,
-		char.SkillInsights.History,
-		char.SkillInsights.Insight,
-		char.SkillInsights.Intimidation,
-		char.SkillInsights.Investigation,
-		char.SkillInsights.Medicine,
-		char.SkillInsights.Nature,
-		char.SkillInsights.Perception,
-		char.SkillInsights.Performance,
-		char.SkillInsights.Persuasion,
-		char.SkillInsights.Religion,
-		char.SkillInsights.SleightOfHand,
-		char.SkillInsights.Stealth,
-		char.SkillInsights.Survival,
+		char.SkillModificators.Acrobatics,
+		char.SkillModificators.AnimalHandling,
+		char.SkillModificators.Arcana,
+		char.SkillModificators.Athletics,
+		char.SkillModificators.Deception,
+		char.SkillModificators.History,
+		char.SkillModificators.Insight,
+		char.SkillModificators.Intimidation,
+		char.SkillModificators.Investigation,
+		char.SkillModificators.Medicine,
+		char.SkillModificators.Nature,
+		char.SkillModificators.Perception,
+		char.SkillModificators.Performance,
+		char.SkillModificators.Persuasion,
+		char.SkillModificators.Religion,
+		char.SkillModificators.SleightOfHand,
+		char.SkillModificators.Stealth,
+		char.SkillModificators.Survival,
 	).Scan(&newID)
 
 	if err != nil {
@@ -179,31 +179,31 @@ func (db *PGCharacterProvider) UpdateCharactersSkillInsights(char *models.Charac
 	ctx, cancel := context.WithTimeout(context.Background(), db.QueryTimeout)
 	defer cancel()
 
-	stmt := `UPDATE skills_insights SET acrobatics=$1, animalHandling=$2, 
+	stmt := `UPDATE skills_modificators SET acrobatics=$1, animalHandling=$2, 
                     arcana=$3, athletics=$4, deception=$5, history=$6,
                     insight=$7, intimidation=$8, investigation=$9,
                     medicine=$10, nature=$11, perception=$12, performance=$13,
                     persuasion=$14, religion=$15, sleight_of_hand=$16,
                     stealth=$17, survival=$18 WHERE character_owner=$19 `
 	res, err := db.DB.ExecContext(ctx, stmt,
-		char.SkillInsights.Acrobatics,
-		char.SkillInsights.AnimalHandling,
-		char.SkillInsights.Arcana,
-		char.SkillInsights.Athletics,
-		char.SkillInsights.Deception,
-		char.SkillInsights.History,
-		char.SkillInsights.Insight,
-		char.SkillInsights.Intimidation,
-		char.SkillInsights.Investigation,
-		char.SkillInsights.Medicine,
-		char.SkillInsights.Nature,
-		char.SkillInsights.Perception,
-		char.SkillInsights.Performance,
-		char.SkillInsights.Persuasion,
-		char.SkillInsights.Religion,
-		char.SkillInsights.SleightOfHand,
-		char.SkillInsights.Stealth,
-		char.SkillInsights.Survival,
+		char.SkillModificators.Acrobatics,
+		char.SkillModificators.AnimalHandling,
+		char.SkillModificators.Arcana,
+		char.SkillModificators.Athletics,
+		char.SkillModificators.Deception,
+		char.SkillModificators.History,
+		char.SkillModificators.Insight,
+		char.SkillModificators.Intimidation,
+		char.SkillModificators.Investigation,
+		char.SkillModificators.Medicine,
+		char.SkillModificators.Nature,
+		char.SkillModificators.Perception,
+		char.SkillModificators.Performance,
+		char.SkillModificators.Persuasion,
+		char.SkillModificators.Religion,
+		char.SkillModificators.SleightOfHand,
+		char.SkillModificators.Stealth,
+		char.SkillModificators.Survival,
 		char.ID,
 	)
 
@@ -236,7 +236,7 @@ func (db *PGCharacterProvider) GetFullCharacterByID(charID int) (*models.Charact
                     performance,persuasion, religion,sleight_of_hand,stealth,survival
                     FROM characters 
                         LEFT JOIN abilities ON characters.id = abilities.character_owner
-                        LEFT JOIN skills_insights ON characters.id = skills_insights.character_owner
+                        LEFT JOIN skills_modificators ON characters.id = skills_modificators.character_owner
 					WHERE characters.id = $1`
 	char := new(models.Character)
 	row := db.DB.QueryRowContext(ctx, stmt, charID)
@@ -259,24 +259,24 @@ func (db *PGCharacterProvider) GetFullCharacterByID(charID int) (*models.Charact
 		&char.Abilities.Intelligence,
 		&char.Abilities.Wisdom,
 		&char.Abilities.Charisma,
-		&char.SkillInsights.Acrobatics,
-		&char.SkillInsights.AnimalHandling,
-		&char.SkillInsights.Arcana,
-		&char.SkillInsights.Athletics,
-		&char.SkillInsights.Deception,
-		&char.SkillInsights.History,
-		&char.SkillInsights.Insight,
-		&char.SkillInsights.Intimidation,
-		&char.SkillInsights.Investigation,
-		&char.SkillInsights.Medicine,
-		&char.SkillInsights.Nature,
-		&char.SkillInsights.Perception,
-		&char.SkillInsights.Performance,
-		&char.SkillInsights.Persuasion,
-		&char.SkillInsights.Religion,
-		&char.SkillInsights.SleightOfHand,
-		&char.SkillInsights.Stealth,
-		&char.SkillInsights.Survival,
+		&char.SkillModificators.Acrobatics,
+		&char.SkillModificators.AnimalHandling,
+		&char.SkillModificators.Arcana,
+		&char.SkillModificators.Athletics,
+		&char.SkillModificators.Deception,
+		&char.SkillModificators.History,
+		&char.SkillModificators.Insight,
+		&char.SkillModificators.Intimidation,
+		&char.SkillModificators.Investigation,
+		&char.SkillModificators.Medicine,
+		&char.SkillModificators.Nature,
+		&char.SkillModificators.Perception,
+		&char.SkillModificators.Performance,
+		&char.SkillModificators.Persuasion,
+		&char.SkillModificators.Religion,
+		&char.SkillModificators.SleightOfHand,
+		&char.SkillModificators.Stealth,
+		&char.SkillModificators.Survival,
 	)
 
 	if err != nil {
@@ -389,7 +389,7 @@ func (db *PGCharacterProvider) GetCharactersSkillsInsightsByCharacterID(charID i
 	stmt := `SELECT acrobatics, animalHandling, arcana, athletics,deception,history,
                     insight,intimidation, investigation,medicine,nature,perception,
                     performance,persuasion, religion,sleight_of_hand,stealth,survival
-                    FROM skills_insights WHERE character_owner = $1`
+                    FROM skills_modificators WHERE character_owner = $1`
 	skills := new(models.Skills)
 	row := db.DB.QueryRowContext(ctx, stmt, charID)
 	err := row.Scan(
@@ -471,7 +471,7 @@ func (db *PGCharacterProvider) DeleteSkillInsightsByCharacterID(id int) error {
 
 	defer cancel()
 
-	res, err := db.DB.ExecContext(ctx, "DELETE FROM skills_insights WHERE character_owner=$1", id)
+	res, err := db.DB.ExecContext(ctx, "DELETE FROM skills_modificators WHERE character_owner=$1", id)
 
 	if err != nil {
 		return ParsePqError(err)

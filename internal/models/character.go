@@ -3,20 +3,20 @@ package models
 import "time"
 
 type Character struct {
-	ID            int
-	Name          string
-	OwnerTgID     string
-	Level         int
-	CurrentHP     int
-	MaxHP         int
-	Armor         int
-	GoldCoins     int
-	SilverCoins   int
-	CopperCoins   int
-	Abilities     Abilities
-	SkillInsights Skills
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
+	ID                int
+	Name              string
+	OwnerTgID         string
+	Level             int
+	CurrentHP         int
+	MaxHP             int
+	Armor             int
+	GoldCoins         int
+	SilverCoins       int
+	CopperCoins       int
+	Abilities         Abilities
+	SkillModificators Skills
+	CreatedAt         time.Time
+	UpdatedAt         time.Time
 }
 
 type Abilities struct {
@@ -59,23 +59,23 @@ func (c Character) MasteryBonus() int {
 
 func (c Character) Skills() Skills {
 	return Skills{
-		Acrobatics:     c.Abilities.Dexterity + c.SkillInsights.Acrobatics*c.MasteryBonus(),
-		AnimalHandling: c.Abilities.Wisdom + c.SkillInsights.AnimalHandling*c.MasteryBonus(),
-		Arcana:         c.Abilities.Intelligence + c.SkillInsights.Arcana*c.MasteryBonus(),
-		Athletics:      c.Abilities.Strength + c.SkillInsights.Athletics*c.MasteryBonus(),
-		Deception:      c.Abilities.Charisma + c.SkillInsights.Deception*c.MasteryBonus(),
-		History:        c.Abilities.Intelligence + c.SkillInsights.History*c.MasteryBonus(),
-		Insight:        c.Abilities.Dexterity + c.SkillInsights.Insight*c.MasteryBonus(),
-		Intimidation:   c.Abilities.Charisma + c.SkillInsights.Intimidation*c.MasteryBonus(),
-		Investigation:  c.Abilities.Intelligence + c.SkillInsights.Investigation*c.MasteryBonus(),
-		Medicine:       c.Abilities.Wisdom + c.SkillInsights.Medicine*c.MasteryBonus(),
-		Nature:         c.Abilities.Intelligence + c.SkillInsights.Nature*c.MasteryBonus(),
-		Perception:     c.Abilities.Wisdom + c.SkillInsights.Perception*c.MasteryBonus(),
-		Performance:    c.Abilities.Charisma + c.SkillInsights.Performance*c.MasteryBonus(),
-		Persuasion:     c.Abilities.Charisma + c.SkillInsights.Persuasion*c.MasteryBonus(),
-		Religion:       c.Abilities.Intelligence + c.SkillInsights.Religion*c.MasteryBonus(),
-		SleightOfHand:  c.Abilities.Dexterity + c.SkillInsights.SleightOfHand*c.MasteryBonus(),
-		Stealth:        c.Abilities.Dexterity + c.SkillInsights.Stealth*c.MasteryBonus(),
-		Survival:       c.Abilities.Wisdom + c.SkillInsights.Survival*c.MasteryBonus(),
+		Acrobatics:     calcModificatorFromSkill(c.Abilities.Dexterity) + c.SkillModificators.Acrobatics,
+		AnimalHandling: calcModificatorFromSkill(c.Abilities.Wisdom) + c.SkillModificators.AnimalHandling,
+		Arcana:         calcModificatorFromSkill(c.Abilities.Intelligence) + c.SkillModificators.Arcana,
+		Athletics:      calcModificatorFromSkill(c.Abilities.Strength) + c.SkillModificators.Athletics,
+		Deception:      calcModificatorFromSkill(c.Abilities.Charisma) + c.SkillModificators.Deception,
+		History:        calcModificatorFromSkill(c.Abilities.Intelligence) + c.SkillModificators.History,
+		Insight:        calcModificatorFromSkill(c.Abilities.Dexterity) + c.SkillModificators.Insight,
+		Intimidation:   calcModificatorFromSkill(c.Abilities.Charisma) + c.SkillModificators.Intimidation,
+		Investigation:  calcModificatorFromSkill(c.Abilities.Intelligence) + c.SkillModificators.Investigation,
+		Medicine:       calcModificatorFromSkill(c.Abilities.Wisdom) + c.SkillModificators.Medicine,
+		Nature:         calcModificatorFromSkill(c.Abilities.Intelligence) + c.SkillModificators.Nature,
+		Perception:     calcModificatorFromSkill(c.Abilities.Wisdom) + c.SkillModificators.Perception,
+		Performance:    calcModificatorFromSkill(c.Abilities.Charisma) + c.SkillModificators.Performance,
+		Persuasion:     calcModificatorFromSkill(c.Abilities.Charisma) + c.SkillModificators.Persuasion,
+		Religion:       calcModificatorFromSkill(c.Abilities.Intelligence) + c.SkillModificators.Religion,
+		SleightOfHand:  calcModificatorFromSkill(c.Abilities.Dexterity) + c.SkillModificators.SleightOfHand,
+		Stealth:        calcModificatorFromSkill(c.Abilities.Dexterity) + c.SkillModificators.Stealth,
+		Survival:       calcModificatorFromSkill(c.Abilities.Wisdom) + c.SkillModificators.Survival,
 	}
 }

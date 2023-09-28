@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS abilities (
     updated_at      TIMESTAMP NOT NULL DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS skills_insights(
+CREATE TABLE IF NOT EXISTS skills_modificators(
     id              SERIAL NOT NULL PRIMARY KEY,
     character_owner INTEGER,
     acrobatics      INTEGER,
